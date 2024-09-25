@@ -6,6 +6,10 @@ globalStyle('*', {
 	boxSizing: 'border-box',
 });
 
+globalStyle('body', {
+	background: '#f5f5f5',
+});
+
 globalStyle('a', {
 	textDecoration: 'none',
 	color: 'inherit',
