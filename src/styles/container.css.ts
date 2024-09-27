@@ -16,13 +16,18 @@ export const section = styleVariants({
 	big: [
 		sectionBase,
 		{
-			flex: 3,
+			flex: 2,
 		},
 	],
 	small: [
 		sectionBase,
 		{
 			flex: 1,
+			padding: 16,
 		},
 	],
+});
+
+export const flexContainer = style({
+	display: 'flex',
 });

@@ -1,4 +1,5 @@
+import FlexContainer from './flexContainer';
 import MainContainer from './mainContainer';
 import SectionContainer from './sectionContainer';
 
-export { MainContainer, SectionContainer };
+export { FlexContainer, MainContainer, SectionContainer };
