@@ -5,6 +5,7 @@ import {
 	SectionContainer,
 } from './components/container';
 import { SearchSchemeForm } from './components/searchScheme';
+import { SelectLightness } from './components/selectLightness';
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 				<SectionContainer>
 					<FlexContainer>
 						<SearchSchemeForm />
+						<SelectLightness />
 					</FlexContainer>
 				</SectionContainer>
 			</MainContainer>
