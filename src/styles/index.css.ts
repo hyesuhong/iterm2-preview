@@ -26,3 +26,11 @@ globalStyle('img', {
 globalStyle('button', {
 	cursor: 'pointer',
 });
+
+globalStyle('#root', {
+	width: '100vw',
+	height: '100vh',
+	display: 'grid',
+	gridTemplateRows: 'min-content minmax(0, 1fr)',
+	rowGap: 24,
+});

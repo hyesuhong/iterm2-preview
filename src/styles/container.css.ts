@@ -3,19 +3,26 @@ import { style, styleVariants } from '@vanilla-extract/css';
 export const main = style({
 	display: 'flex',
 	gap: '0 24px',
-	padding: '0 24px',
-	marginTop: 40,
+	padding: '0 24px 40px',
 });
 
-// export const section = style({
-// 	flex: 'var(--flex-size)',
-// });
+const sectionBase = style({
+	background: '#ffffff',
+	borderRadius: 16,
+	overflow: 'hidden',
+});
 
 export const section = styleVariants({
-	big: {
-		flex: 3,
-	},
-	small: {
-		flex: 1,
-	},
+	big: [
+		sectionBase,
+		{
+			flex: 3,
+		},
+	],
+	small: [
+		sectionBase,
+		{
+			flex: 1,
+		},
+	],
 });
