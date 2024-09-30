@@ -7,6 +7,7 @@ import {
 import { SchemeCard, SchemeGrid } from './components/scheme';
 import { SearchSchemeForm } from './components/searchScheme';
 import { SelectLightness } from './components/selectLightness';
+import { WebTerminal } from './components/webTerminal';
 import { schemeSelectContainer } from './styles/container.css';
 
 const dummyData = new Array(20).fill(0).map((_, index) => index);
@@ -16,7 +17,9 @@ function App() {
 		<>
 			<Header />
 			<MainContainer>
-				<SectionContainer growSize='big'>preview</SectionContainer>
+				<SectionContainer growSize='big'>
+					<WebTerminal />
+				</SectionContainer>
 				<SectionContainer>
 					<div className={schemeSelectContainer}>
 						<FlexContainer>
