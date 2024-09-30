@@ -31,3 +31,10 @@ export const section = styleVariants({
 export const flexContainer = style({
 	display: 'flex',
 });
+
+export const schemeSelectContainer = style({
+	display: 'grid',
+	gridTemplateRows: 'min-content minmax(0, 1fr)',
+	rowGap: 24,
+	height: '100%',
+});
