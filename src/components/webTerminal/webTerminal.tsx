@@ -8,7 +8,7 @@ const WebTerminal = () => {
 
 	return (
 		<>
-			<div className={wrapper} ref={ref}></div>
+			<div className={`${wrapper} mono`} ref={ref}></div>
 		</>
 	);
 };

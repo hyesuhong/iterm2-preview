@@ -1,4 +1,5 @@
 import { globalStyle } from '@vanilla-extract/css';
+import { jetBrainsMono, pretendard } from './font.css';
 
 globalStyle('*', {
 	margin: 0,
@@ -7,6 +8,7 @@ globalStyle('*', {
 });
 
 globalStyle('body', {
+	fontFamily: `${pretendard}, sans-serif`,
 	background: '#f5f5f5',
 });
 
@@ -33,4 +35,8 @@ globalStyle('#root', {
 	display: 'grid',
 	gridTemplateRows: 'min-content minmax(0, 1fr)',
 	rowGap: 24,
+});
+
+globalStyle('.mono', {
+	fontFamily: `${jetBrainsMono}, monospace`,
 });

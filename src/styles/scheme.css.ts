@@ -32,7 +32,7 @@ export const colorChart = style({
 
 export const schemeText = style({
 	color: '#A6B2C0',
-	fontFamily: 'monospace',
+	fontSize: 14,
 });
 
 const ping = keyframes({

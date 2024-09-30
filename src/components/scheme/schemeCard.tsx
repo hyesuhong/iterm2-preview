@@ -10,7 +10,7 @@ import {
 const SchemeCard = () => {
 	return (
 		<dl className={schemeCard}>
-			<dd className={schemeDisplay}>
+			<dd className={`${schemeDisplay} mono`}>
 				<ul className={colorChart}>
 					<li style={{ background: '#061A2B' }} />
 					<li style={{ background: '#EA9091' }} />

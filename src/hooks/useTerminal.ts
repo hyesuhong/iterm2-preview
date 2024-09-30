@@ -1,3 +1,4 @@
+import { jetBrainsMono } from '@/styles/font.css';
 import { ITerminalOptions, ITheme, Terminal } from '@xterm/xterm';
 import { useEffect, useRef, useState } from 'react';
 
@@ -28,6 +29,8 @@ const options: ITerminalOptions = {
 	cursorBlink: true,
 	cursorStyle: 'block',
 	theme: dummyTheme,
+	fontFamily: jetBrainsMono,
+	fontSize: 14,
 };
 
 const useTerminal = <T extends HTMLElement>() => {
