@@ -6,7 +6,7 @@ import { cwd } from 'process';
 /* TODO
 - [x] get all schemes
 - [x] parse schemes(xml -> object)
-- [ ] convert rgb -> hex
+- [x] convert rgb -> hex
 - [ ] detect dark or light by backgroun color
 - [ ] write json file inclues all schemes
 */
@@ -59,7 +59,9 @@ export const getAllSchemeFiles = async () => {
 		filename.replace(/\.itermcolors/gi, '')
 	);
 
-	return nameList.length;
+	const data = await Promise.all(nameList.map((name) => getSchemeByName(name)));
+
+	return data.length;
 };
 
 export const getSchemeByName = async (name: string) => {
@@ -137,7 +139,17 @@ const parseSchemeLises = (lines: string[]): ITheme => {
 
 	const schemeColorObject = Object.fromEntries(schemeMap);
 
-	return schemeColorObject;
+	const schemeHexColor = Object.keys(schemeColorObject)
+		.map((colors) => {
+			const hex = convertRGBToHex(schemeColorObject[colors]);
+			return { color: colors, hex };
+		})
+		.reduce<Record<string, string>>((acc, colors) => {
+			acc[colors.color] = colors.hex;
+			return acc;
+		}, {});
+
+	return schemeHexColor;
 };
 
 const modifyKey = (key: string) => {
@@ -162,4 +174,27 @@ const modifyKey = (key: string) => {
 	}
 
 	return '';
+};
+
+const convertRGBToHex = ({
+	red = 0,
+	green = 0,
+	blue = 0,
+}: {
+	red?: number;
+	green?: number;
+	blue?: number;
+}) => {
+	const r = getHexCode(red);
+	const g = getHexCode(green);
+	const b = getHexCode(blue);
+
+	return `#${r}${g}${b}`;
+};
+
+const getHexCode = (color: number) => {
+	const colorValue = Math.round(color * 255);
+	const code = colorValue.toString(16);
+	const hexCode = code.length < 2 ? `0${code}` : code;
+	return hexCode;
 };
