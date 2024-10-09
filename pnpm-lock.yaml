@@ -67,6 +67,9 @@ devDependencies:
   vite:
     specifier: ^5.4.1
     version: 5.4.2
+  vite-node:
+    specifier: ^2.1.2
+    version: 2.1.2
   vitest:
     specifier: ^2.1.2
     version: 2.1.2

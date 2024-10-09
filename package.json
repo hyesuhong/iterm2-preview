@@ -10,7 +10,8 @@
 		"format": "prettier --cache --write '**/*.{js,jsx,ts,tsx}'",
 		"preview": "vite preview",
 		"prepare": "husky",
-		"test": "vitest"
+		"test": "vitest",
+		"build:scheme": "vite-node scripts/convertSchemes.ts"
 	},
 	"lint-staged": {
 		"**/*.{js,jsx,ts,tsx}": [
@@ -40,6 +41,7 @@
 		"typescript": "^5.5.3",
 		"typescript-eslint": "^8.0.1",
 		"vite": "^5.4.1",
+		"vite-node": "^2.1.2",
 		"vitest": "^2.1.2"
 	}
 }

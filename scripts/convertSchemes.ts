@@ -8,7 +8,7 @@ import { cwd } from 'process';
 - [x] parse schemes(xml -> object)
 - [x] convert rgb -> hex
 - [x] detect dark or light by backgroun color(https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color)
-- [ ] write json file inclues all schemes
+- [x] write json file inclues all schemes
 
 - [ ] REFACTORING!
 */
@@ -19,6 +19,8 @@ interface Scheme {
 }
 
 const TARGET_DIR = join(cwd(), 'iTerm2-Color-Schemes', 'schemes');
+const EXPORT_DIR = join(cwd(), 'src', 'data');
+const EXPORT_NAME = 'schemes.json';
 const EXTENSION = 'itermcolors';
 
 const REGEXP = {
@@ -60,6 +62,20 @@ const COLOR_NAME = {
 	Selection: 'selectionBackground',
 };
 
+const writeSchemesJson = async () => {
+	const data = await getAllSchemeFiles();
+	// let exportDir;
+	try {
+		await fs.access(EXPORT_DIR);
+		console.log('can access');
+	} catch (e) {
+		console.log('cannot access');
+		await fs.mkdir(EXPORT_DIR);
+	}
+
+	await fs.writeFile(join(EXPORT_DIR, EXPORT_NAME), JSON.stringify(data));
+};
+
 export const getAllSchemeFiles = async () => {
 	const dirArr = await fs.readdir(TARGET_DIR);
 	const nameList = dirArr.map((filename) =>
@@ -68,7 +84,7 @@ export const getAllSchemeFiles = async () => {
 
 	const data = await Promise.all(nameList.map((name) => getSchemeByName(name)));
 
-	return data.length;
+	return data;
 };
 
 export const getSchemeByName = async (name: string) => {
@@ -221,3 +237,5 @@ const detectIsDark = ({
 	const isDark = luminance < 0.4;
 	return isDark ? 'dark' : 'light';
 };
+
+writeSchemesJson();
