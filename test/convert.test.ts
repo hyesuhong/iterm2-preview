@@ -31,6 +31,7 @@ test('get 3024 Day color schemes', async () => {
 			yellow: '#fded02',
 		},
 		name: '3024 Day',
+		theme: 'light',
 	};
 
 	expect(await getSchemeByName('3024 Day')).toStrictEqual(scheme3024Day);

@@ -7,9 +7,16 @@ import { cwd } from 'process';
 - [x] get all schemes
 - [x] parse schemes(xml -> object)
 - [x] convert rgb -> hex
-- [ ] detect dark or light by backgroun color
+- [x] detect dark or light by backgroun color(https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color)
 - [ ] write json file inclues all schemes
+
+- [ ] REFACTORING!
 */
+
+interface Scheme {
+	theme: 'light' | 'dark';
+	colorScheme: ITheme;
+}
 
 const TARGET_DIR = join(cwd(), 'iTerm2-Color-Schemes', 'schemes');
 const EXTENSION = 'itermcolors';
@@ -83,10 +90,10 @@ export const getSchemeByName = async (name: string) => {
 	);
 	const scheme = parseSchemeLises(onlyDictionary);
 
-	return { name, colorScheme: scheme };
+	return { name, ...scheme };
 };
 
-const parseSchemeLises = (lines: string[]): ITheme => {
+const parseSchemeLises = (lines: string[]): Scheme => {
 	const schemeMap = new Map();
 
 	const keyLines = lines
@@ -139,6 +146,8 @@ const parseSchemeLises = (lines: string[]): ITheme => {
 
 	const schemeColorObject = Object.fromEntries(schemeMap);
 
+	const isDark = detectIsDark(schemeColorObject.background);
+
 	const schemeHexColor = Object.keys(schemeColorObject)
 		.map((colors) => {
 			const hex = convertRGBToHex(schemeColorObject[colors]);
@@ -149,7 +158,7 @@ const parseSchemeLises = (lines: string[]): ITheme => {
 			return acc;
 		}, {});
 
-	return schemeHexColor;
+	return { colorScheme: schemeHexColor, theme: isDark };
 };
 
 const modifyKey = (key: string) => {
@@ -197,4 +206,18 @@ const getHexCode = (color: number) => {
 	const code = colorValue.toString(16);
 	const hexCode = code.length < 2 ? `0${code}` : code;
 	return hexCode;
+};
+
+const detectIsDark = ({
+	red = 0,
+	green = 0,
+	blue = 0,
+}: {
+	red?: number;
+	green?: number;
+	blue?: number;
+}) => {
+	const luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+	const isDark = luminance < 0.4;
+	return isDark ? 'dark' : 'light';
 };
