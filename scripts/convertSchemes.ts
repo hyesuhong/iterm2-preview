@@ -1,27 +1,12 @@
-import { ITheme } from '@xterm/xterm';
 import fs from 'fs/promises';
 import { join } from 'path';
 import { cwd } from 'process';
-
-/* TODO
-- [x] get all schemes
-- [x] parse schemes(xml -> object)
-- [x] convert rgb -> hex
-- [x] detect dark or light by backgroun color(https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color)
-- [x] write json file inclues all schemes
-
-- [ ] REFACTORING!
-*/
-
-interface Scheme {
-	theme: 'light' | 'dark';
-	colorScheme: ITheme;
-}
+import { COLOR_NAME, ColorNameKey, getColorName, Rgb, Scheme } from './scheme';
 
 const TARGET_DIR = join(cwd(), 'iTerm2-Color-Schemes', 'schemes');
 const EXPORT_DIR = join(cwd(), 'src', 'data');
 const EXPORT_NAME = 'schemes.json';
-const EXTENSION = 'itermcolors';
+const EXTENSION = '.itermcolors';
 
 const REGEXP = {
 	key: {
@@ -38,33 +23,8 @@ const REGEXP = {
 	},
 };
 
-const COLOR_NAME = {
-	'Ansi 1': 'red',
-	'Ansi 0': 'black',
-	'Ansi 2': 'green',
-	'Ansi 3': 'yellow',
-	'Ansi 4': 'blue',
-	'Ansi 5': 'magenta',
-	'Ansi 6': 'cyan',
-	'Ansi 7': 'white',
-	'Ansi 8': 'brightBlack',
-	'Ansi 9': 'brightRed',
-	'Ansi 10': 'brightGreen',
-	'Ansi 11': 'brightYellow',
-	'Ansi 12': 'brightBlue',
-	'Ansi 13': 'brightMagenta',
-	'Ansi 14': 'brightCyan',
-	'Ansi 15': 'brightWhite',
-	Background: 'background',
-	Cursor: 'cursor',
-	Foreground: 'foreground',
-	'Selected Text': 'selectionForeground',
-	Selection: 'selectionBackground',
-};
-
 const writeSchemesJson = async () => {
 	const data = await getAllSchemeFiles();
-	// let exportDir;
 	try {
 		await fs.access(EXPORT_DIR);
 		console.log('can access');
@@ -73,7 +33,8 @@ const writeSchemesJson = async () => {
 		await fs.mkdir(EXPORT_DIR);
 	}
 
-	await fs.writeFile(join(EXPORT_DIR, EXPORT_NAME), JSON.stringify(data));
+	const exportFileDir = join(EXPORT_DIR, EXPORT_NAME);
+	await fs.writeFile(exportFileDir, JSON.stringify(data));
 };
 
 export const getAllSchemeFiles = async () => {
@@ -88,7 +49,7 @@ export const getAllSchemeFiles = async () => {
 };
 
 export const getSchemeByName = async (name: string) => {
-	const basePath = join(TARGET_DIR, `${name}.${EXTENSION}`);
+	const basePath = join(TARGET_DIR, `${name}${EXTENSION}`);
 
 	const contents = await fs.readFile(basePath, 'utf8');
 	const contentLines = contents.split(/\n/);
@@ -110,7 +71,7 @@ export const getSchemeByName = async (name: string) => {
 };
 
 const parseSchemeLises = (lines: string[]): Scheme => {
-	const schemeMap = new Map();
+	const schemeMap = new Map<string, Rgb>();
 
 	const keyLines = lines
 		.map((line, index) => ({ index, text: line }))
@@ -118,6 +79,11 @@ const parseSchemeLises = (lines: string[]): Scheme => {
 
 	for (let { text, index } of keyLines) {
 		const key = modifyKey(text.replace(REGEXP.replacer.key, ''));
+
+		if (key === '') {
+			continue;
+		}
+
 		const nextLineType = lines[index + 1].match(REGEXP.dictStart)
 			? 'DICT'
 			: lines[index + 1].match(REGEXP.real)
@@ -158,8 +124,6 @@ const parseSchemeLises = (lines: string[]): Scheme => {
 		}
 	}
 
-	schemeMap.delete('');
-
 	const schemeColorObject = Object.fromEntries(schemeMap);
 
 	const isDark = detectIsDark(schemeColorObject.background);
@@ -190,8 +154,8 @@ const modifyKey = (key: string) => {
 		if (trimKey.includes('Color')) {
 			const name = trimKey.replace(' Color', '');
 			if (name in COLOR_NAME) {
-				const colorName = name as keyof typeof COLOR_NAME;
-				const color = COLOR_NAME[colorName];
+				const colorName = name as ColorNameKey;
+				const color = getColorName(colorName);
 
 				return color;
 			}
@@ -201,15 +165,7 @@ const modifyKey = (key: string) => {
 	return '';
 };
 
-const convertRGBToHex = ({
-	red = 0,
-	green = 0,
-	blue = 0,
-}: {
-	red?: number;
-	green?: number;
-	blue?: number;
-}) => {
+const convertRGBToHex = ({ red = 0, green = 0, blue = 0 }: Rgb) => {
 	const r = getHexCode(red);
 	const g = getHexCode(green);
 	const b = getHexCode(blue);
@@ -224,15 +180,7 @@ const getHexCode = (color: number) => {
 	return hexCode;
 };
 
-const detectIsDark = ({
-	red = 0,
-	green = 0,
-	blue = 0,
-}: {
-	red?: number;
-	green?: number;
-	blue?: number;
-}) => {
+const detectIsDark = ({ red = 0, green = 0, blue = 0 }: Rgb) => {
 	const luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
 	const isDark = luminance < 0.4;
 	return isDark ? 'dark' : 'light';
