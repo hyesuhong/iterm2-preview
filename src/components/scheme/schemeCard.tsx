@@ -1,40 +1,64 @@
 import {
-	colorChart,
 	schemeCard,
+	schemeCssVars,
 	schemeCursor,
 	schemeDisplay,
 	schemeName,
 	schemeText,
 } from '@/styles/scheme.css';
+import { Scheme } from '@/types/scheme';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
+import ColorChart from './colorChart';
 
-const SchemeCard = () => {
+interface SchemeCardProps extends Scheme {
+	isSelected?: boolean;
+}
+
+const SchemeCard = ({
+	name,
+	colorScheme,
+	theme,
+	isSelected,
+}: SchemeCardProps) => {
 	return (
-		<dl className={schemeCard}>
+		<dl
+			className={schemeCard}
+			style={assignInlineVars(schemeCssVars, {
+				background: colorScheme.background || '',
+				foreground: colorScheme.foreground || '',
+				cursor: colorScheme.cursor || '',
+				selection: {
+					background: colorScheme.selectionBackground || '',
+					foreground: colorScheme.selectionForeground || '',
+				},
+				ansi: {
+					black: colorScheme.black || '',
+					red: colorScheme.red || '',
+					green: colorScheme.green || '',
+					yellow: colorScheme.yellow || '',
+					blue: colorScheme.blue || '',
+					magenta: colorScheme.magenta || '',
+					cyan: colorScheme.cyan || '',
+					white: colorScheme.white || '',
+					brightBlack: colorScheme.brightBlack || '',
+					brightRed: colorScheme.brightRed || '',
+					brightGreen: colorScheme.brightGreen || '',
+					brightYellow: colorScheme.brightYellow || '',
+					brightBlue: colorScheme.brightBlue || '',
+					brightMagenta: colorScheme.brightMagenta || '',
+					brightCyan: colorScheme.brightCyan || '',
+					brightWhite: colorScheme.brightWhite || '',
+				},
+			})}
+		>
 			<dd className={`${schemeDisplay} mono`}>
-				<ul className={colorChart}>
-					<li style={{ background: '#061A2B' }} />
-					<li style={{ background: '#EA9091' }} />
-					<li style={{ background: '#7DBD8D' }} />
-					<li style={{ background: '#EAC71D' }} />
-					<li style={{ background: '#77A8ED' }} />
-					<li style={{ background: '#CCA6EC' }} />
-					<li style={{ background: '#28B99E' }} />
-					<li style={{ background: '#E9EAEC' }} />
-					<li style={{ background: '#535455' }} />
-					<li style={{ background: '#EA8F91' }} />
-					<li style={{ background: '#7CBD8D' }} />
-					<li style={{ background: '#EAC71D' }} />
-					<li style={{ background: '#77A8ED' }} />
-					<li style={{ background: '#CBA7EC' }} />
-					<li style={{ background: '#7CBD8D' }} />
-					<li style={{ background: '#E9EAEC' }} />
-				</ul>
+				<ColorChart />
 				<p className={schemeText}>
-					$ echo "Scheme name"
+					$ echo "{name}"
 					<span className={schemeCursor} />
 				</p>
 			</dd>
-			<dt className={schemeName}>Scheme name</dt>
+			<dt className={schemeName}>{name}</dt>
 		</dl>
 	);
 };

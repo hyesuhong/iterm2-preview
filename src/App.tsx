@@ -8,9 +8,8 @@ import { SchemeCard, SchemeGrid } from './components/scheme';
 import { SearchSchemeForm } from './components/searchScheme';
 import { SelectLightness } from './components/selectLightness';
 import { WebTerminal } from './components/webTerminal';
+import schemes from './data/schemes.json';
 import { schemeSelectContainer } from './styles/container.css';
-
-const dummyData = new Array(20).fill(0).map((_, index) => index);
 
 function App() {
 	return (
@@ -27,8 +26,13 @@ function App() {
 							<SelectLightness />
 						</FlexContainer>
 						<SchemeGrid>
-							{dummyData.map((d) => (
-								<SchemeCard key={d} />
+							{schemes.map((scheme) => (
+								<SchemeCard
+									key={scheme.name}
+									name={scheme.name}
+									colorScheme={scheme.colorScheme}
+									theme={scheme.theme === 'light' ? 'light' : 'dark'}
+								/>
 							))}
 						</SchemeGrid>
 					</div>

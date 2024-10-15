@@ -1,4 +1,41 @@
-import { keyframes, style } from '@vanilla-extract/css';
+import {
+	createThemeContract,
+	createVar,
+	keyframes,
+	style,
+} from '@vanilla-extract/css';
+
+export const schemeCssVars = createThemeContract({
+	background: null,
+	foreground: null,
+	selection: {
+		background: null,
+		foreground: null,
+	},
+	ansi: {
+		black: null,
+		red: null,
+		green: null,
+		yellow: null,
+		blue: null,
+		magenta: null,
+		cyan: null,
+		white: null,
+		brightBlack: null,
+		brightRed: null,
+		brightGreen: null,
+		brightYellow: null,
+		brightBlue: null,
+		brightMagenta: null,
+		brightCyan: null,
+		brightWhite: null,
+	},
+	cursor: null,
+});
+
+export const backgroundVar = createVar();
+export const textColorVar = createVar();
+export const cursorColorVar = createVar();
 
 export const schemeGrid = style({
 	display: 'grid',
@@ -16,9 +53,16 @@ export const schemeCard = style({
 });
 
 export const schemeDisplay = style({
-	background: '#333D4C',
+	background: schemeCssVars.background,
 	padding: '20px 12px',
 	borderRadius: 4,
+	wordBreak: 'break-word',
+	color: schemeCssVars.foreground,
+
+	'::selection': {
+		backgroundColor: schemeCssVars.selection.background,
+		color: schemeCssVars.selection.foreground,
+	},
 });
 
 export const colorChart = style({
@@ -30,8 +74,60 @@ export const colorChart = style({
 	marginBottom: 20,
 });
 
+export const colorChartItem = style({
+	selectors: {
+		'&.ansi_black': {
+			background: schemeCssVars.ansi.black,
+		},
+		'&.ansi_red': {
+			background: schemeCssVars.ansi.red,
+		},
+		'&.ansi_green': {
+			background: schemeCssVars.ansi.green,
+		},
+		'&.ansi_yellow': {
+			background: schemeCssVars.ansi.yellow,
+		},
+		'&.ansi_blue': {
+			background: schemeCssVars.ansi.blue,
+		},
+		'&.ansi_magenta': {
+			background: schemeCssVars.ansi.magenta,
+		},
+		'&.ansi_cyan': {
+			background: schemeCssVars.ansi.cyan,
+		},
+		'&.ansi_white': {
+			background: schemeCssVars.ansi.white,
+		},
+		'&.ansi_brightBlack': {
+			background: schemeCssVars.ansi.brightBlack,
+		},
+		'&.ansi_brightRed': {
+			background: schemeCssVars.ansi.brightRed,
+		},
+		'&.ansi_brightGreen': {
+			background: schemeCssVars.ansi.brightGreen,
+		},
+		'&.ansi_brightYellow': {
+			background: schemeCssVars.ansi.brightYellow,
+		},
+		'&.ansi_brightBlue': {
+			background: schemeCssVars.ansi.brightBlue,
+		},
+		'&.ansi_brightMagenta': {
+			background: schemeCssVars.ansi.brightMagenta,
+		},
+		'&.ansi_brightCyan': {
+			background: schemeCssVars.ansi.brightCyan,
+		},
+		'&.ansi_brightWhite': {
+			background: schemeCssVars.ansi.brightWhite,
+		},
+	},
+});
+
 export const schemeText = style({
-	color: '#A6B2C0',
 	fontSize: 14,
 });
 
@@ -45,7 +141,7 @@ export const schemeCursor = style({
 	marginLeft: '1em',
 	width: 4,
 	height: '1em',
-	background: '#DDB3FF',
+	background: schemeCssVars.cursor,
 	verticalAlign: 'middle',
 	animation: `${ping} 0.7s infinite linear alternate`,
 });
