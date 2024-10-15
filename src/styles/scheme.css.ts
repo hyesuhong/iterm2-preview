@@ -3,6 +3,7 @@ import {
 	createVar,
 	keyframes,
 	style,
+	styleVariants,
 } from '@vanilla-extract/css';
 
 export const schemeCssVars = createThemeContract({
@@ -39,17 +40,33 @@ export const cursorColorVar = createVar();
 
 export const schemeGrid = style({
 	display: 'grid',
-	gridTemplateColumns: 'repeat(2, 1fr)',
+	gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
 	gridAutoRows: 'max-content',
 	gap: 24,
 	overflowX: 'hidden',
 	overflowY: 'auto',
 });
 
-export const schemeCard = style({
+const schemeCardBase = style({
 	padding: 8,
 	borderRadius: 8,
-	border: '1px solid #eee',
+	borderWidth: 1,
+	borderStyle: 'solid',
+});
+
+export const schemeCard = styleVariants({
+	default: [
+		schemeCardBase,
+		{
+			borderColor: '#eee',
+		},
+	],
+	selected: [
+		schemeCardBase,
+		{
+			borderColor: '#5856D6',
+		},
+	],
 });
 
 export const schemeDisplay = style({

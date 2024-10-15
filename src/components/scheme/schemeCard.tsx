@@ -8,9 +8,10 @@ import {
 } from '@/styles/scheme.css';
 import { Scheme } from '@/types/scheme';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
+import { HTMLAttributes } from 'react';
 import ColorChart from './colorChart';
 
-interface SchemeCardProps extends Scheme {
+interface SchemeCardProps extends Scheme, HTMLAttributes<HTMLDListElement> {
 	isSelected?: boolean;
 }
 
@@ -19,10 +20,12 @@ const SchemeCard = ({
 	colorScheme,
 	theme,
 	isSelected,
+	onClick,
 }: SchemeCardProps) => {
 	return (
 		<dl
-			className={schemeCard}
+			className={schemeCard[isSelected ? 'selected' : 'default']}
+			data-name={name}
 			style={assignInlineVars(schemeCssVars, {
 				background: colorScheme.background || '',
 				foreground: colorScheme.foreground || '',
@@ -50,6 +53,7 @@ const SchemeCard = ({
 					brightWhite: colorScheme.brightWhite || '',
 				},
 			})}
+			onClick={onClick}
 		>
 			<dd className={`${schemeDisplay} mono`}>
 				<ColorChart />
