@@ -1,49 +1,20 @@
-import { jetBrainsMono } from '@/styles/font.css';
-import { ITerminalOptions, ITheme, Terminal } from '@xterm/xterm';
+import { ITerminalOptions, Terminal } from '@xterm/xterm';
 import { useEffect, useRef, useState } from 'react';
 
-const dummyTheme: ITheme = {
-	foreground: '#A6B2C0',
-	background: '#333D4C',
-	cursor: '#DDB3FF',
-	black: '#061A2B',
-	brightBlack: '#535455',
-	red: '#EA9091',
-	brightRed: '#EA9091',
-	green: '#7DBD8D',
-	brightGreen: '#7DBD8D',
-	yellow: '#EAC71D',
-	brightYellow: '#EAC71D',
-	blue: '#77A8ED',
-	brightBlue: '#77A8ED',
-	magenta: '#CCA6EC',
-	brightMagenta: '#CCA6EC',
-	cyan: '#28B99E',
-	brightCyan: '#28B99E',
-	white: '#E9EAEC',
-	brightWhite: '#E9EAEC',
-};
+interface UseTerminal {
+	options: ITerminalOptions;
+}
 
-const options: ITerminalOptions = {
-	allowTransparency: true,
-	cursorBlink: true,
-	cursorStyle: 'block',
-	theme: dummyTheme,
-	fontFamily: jetBrainsMono,
-	fontSize: 14,
-};
-
-const useTerminal = <T extends HTMLElement>() => {
-	const [terminal, setTerminal] = useState<Terminal | null>(null);
+const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
+	const terminalRef = useRef<Terminal | null>(null);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const wrapperRef = useRef<T>(null);
 
 	useEffect(() => {
-		if (wrapperRef.current && !isLoaded) {
+		if (wrapperRef.current) {
 			setIsLoaded(true);
 
 			const terminal = new Terminal(options);
-			setTerminal(terminal);
 
 			terminal.open(wrapperRef.current);
 			terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
@@ -51,15 +22,24 @@ const useTerminal = <T extends HTMLElement>() => {
 				console.log(data.charCodeAt(0));
 				terminal.write(data);
 			});
+
+			terminalRef.current = terminal;
 		}
 
 		return () => {
-			if (terminal) {
-				terminal.dispose();
-				setTerminal(null);
+			if (terminalRef.current) {
+				terminalRef.current.dispose();
+				terminalRef.current = null;
 			}
 		};
 	}, [wrapperRef, isLoaded]);
+
+	useEffect(() => {
+		if (terminalRef.current) {
+			console.log(terminalRef.current);
+			terminalRef.current.options = options;
+		}
+	}, [options]);
 
 	return { ref: wrapperRef };
 };
