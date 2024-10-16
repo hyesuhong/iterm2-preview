@@ -1,14 +1,28 @@
 import { label, radioInput } from '@/styles/selectLightness.css';
+import { Theme } from '@/types/scheme';
 import { PropsWithChildren, useId } from 'react';
 
 interface LightnessItemProps extends PropsWithChildren {
 	value: string;
+	checked?: boolean;
+	onChange: (theme: Theme) => void;
 }
 
-const LightnessItem = ({ value, children }: LightnessItemProps) => {
+const LightnessItem = ({
+	value,
+	checked,
+	children,
+	onChange,
+}: LightnessItemProps) => {
 	const id = useId();
-	const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(ev.target.value);
+	const onThemeChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+		const {
+			currentTarget: { value },
+		} = ev;
+
+		if (value === '' || value === 'light' || value === 'dark') {
+			onChange(value);
+		}
 	};
 	return (
 		<>
@@ -18,7 +32,8 @@ const LightnessItem = ({ value, children }: LightnessItemProps) => {
 				id={id}
 				value={value}
 				className={radioInput}
-				onChange={onChange}
+				checked={checked}
+				onChange={onThemeChange}
 			/>
 			<label htmlFor={id} className={label}>
 				{children}

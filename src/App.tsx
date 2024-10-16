@@ -11,7 +11,7 @@ import { SelectLightness } from './components/selectLightness';
 import { WebTerminal } from './components/webTerminal';
 import schemes from './data/schemes.json';
 import { schemeSelectContainer } from './styles/container.css';
-import { Scheme } from './types/scheme';
+import { Scheme, Theme } from './types/scheme';
 
 function App() {
 	const [selectedScheme, setSelectedScheme] = useState<string | null>(
@@ -21,6 +21,7 @@ function App() {
 		schemes as Scheme[]
 	);
 	const [searchText, setSearchText] = useState('');
+	const [selectedTheme, setSelectedTheme] = useState<Theme>('');
 	const gridRef = useRef<HTMLDivElement>(null);
 
 	const handleSchemeCardClick = (ev: MouseEvent<HTMLDListElement>) => {
@@ -42,12 +43,38 @@ function App() {
 	};
 
 	const handleSearch = (text: string) => {
-		const regExp = new RegExp(text, 'gi');
-		const filteredSchemeArr = schemes.filter((scheme) =>
-			scheme.name.match(regExp)
-		);
-		setFilteredSchemes(filteredSchemeArr as Scheme[]);
-		setSelectedScheme(filteredSchemeArr[0].name);
+		filterSchemes({ searchText: text, theme: selectedTheme });
+	};
+
+	const handleThemeChange = (theme: Theme) => {
+		setSelectedTheme(theme);
+
+		filterSchemes({ searchText, theme });
+	};
+
+	const filterSchemes = ({
+		searchText,
+		theme,
+	}: {
+		searchText?: string;
+		theme?: Theme;
+	}) => {
+		const schemesByTheme = !theme
+			? schemes
+			: schemes.filter((scheme) => scheme.theme === theme);
+
+		if (!searchText) {
+			setFilteredSchemes(schemesByTheme as Scheme[]);
+			setSelectedScheme(schemesByTheme[0].name);
+		} else {
+			const regExp = new RegExp(searchText, 'gi');
+			const filteredSchemeArr = schemesByTheme.filter((scheme) =>
+				scheme.name.match(regExp)
+			);
+
+			setFilteredSchemes(filteredSchemeArr as Scheme[]);
+			setSelectedScheme(filteredSchemeArr[0].name);
+		}
 
 		gridRef.current?.scrollTo({ top: 0 });
 	};
@@ -75,7 +102,10 @@ function App() {
 								onChangeSearchText={handleSearchTextChange}
 								onSearch={handleSearch}
 							/>
-							<SelectLightness />
+							<SelectLightness
+								selectedTheme={selectedTheme}
+								onChange={handleThemeChange}
+							/>
 						</FlexContainer>
 						<SchemeGrid gridRef={gridRef}>
 							{filteredSchemes.map((scheme) => (
