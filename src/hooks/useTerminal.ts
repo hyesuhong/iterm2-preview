@@ -14,7 +14,7 @@ const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 			const terminal = new Terminal(options);
 
 			terminal.open(wrapperRef.current);
-			terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ \r\n');
+			terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ \r\n$ ');
 			terminal.onData((data) => {
 				const targetCode = data.charCodeAt(0);
 				if (targetCode === 13) {
@@ -33,7 +33,7 @@ const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 				terminalRef.current = null;
 			}
 		};
-	}, [wrapperRef, options]);
+	}, [wrapperRef]);
 
 	useEffect(() => {
 		if (terminalRef.current) {
