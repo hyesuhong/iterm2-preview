@@ -1,8 +1,17 @@
 import { input } from '@/styles/searchScheme.css';
+import { InputHTMLAttributes } from 'react';
 
-const SearchInput = () => {
+interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {}
+
+const SearchInput = ({ value, onChange, placeholder }: SearchInputProps) => {
 	return (
-		<input type='text' placeholder='Search scheme by name' className={input} />
+		<input
+			type='text'
+			placeholder={placeholder}
+			className={input}
+			value={value}
+			onChange={onChange}
+		/>
 	);
 };
 

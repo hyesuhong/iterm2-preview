@@ -14,9 +14,13 @@ const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 			const terminal = new Terminal(options);
 
 			terminal.open(wrapperRef.current);
-			terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
+			terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ \r\n');
 			terminal.onData((data) => {
-				console.log(data.charCodeAt(0));
+				const targetCode = data.charCodeAt(0);
+				if (targetCode === 13) {
+					terminal.write('\r\n$ ');
+					return;
+				}
 				terminal.write(data);
 			});
 

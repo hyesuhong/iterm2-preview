@@ -1,5 +1,5 @@
 import { Header } from '@/components/header';
-import { MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import {
 	FlexContainer,
 	MainContainer,
@@ -17,6 +17,11 @@ function App() {
 	const [selectedScheme, setSelectedScheme] = useState<string | null>(
 		schemes[0].name
 	);
+	const [filteredSchemes, setFilteredSchemes] = useState<Scheme[]>(
+		schemes as Scheme[]
+	);
+	const [searchText, setSearchText] = useState('');
+
 	const handleSchemeCardClick = (ev: MouseEvent<HTMLDListElement>) => {
 		const {
 			currentTarget: { dataset },
@@ -25,6 +30,23 @@ function App() {
 		if (dataset.name) {
 			setSelectedScheme(dataset.name);
 		}
+	};
+
+	const handleSearchTextChange = (ev: ChangeEvent<HTMLInputElement>) => {
+		const {
+			currentTarget: { value },
+		} = ev;
+
+		setSearchText(value);
+	};
+
+	const handleSearch = (text: string) => {
+		const regExp = new RegExp(text, 'gi');
+		const filteredSchemeArr = schemes.filter((scheme) =>
+			scheme.name.match(regExp)
+		);
+		setFilteredSchemes(filteredSchemeArr as Scheme[]);
+		setSelectedScheme(filteredSchemeArr[0].name);
 	};
 
 	const getSelectedScheme = (name: string | null) => {
@@ -45,11 +67,15 @@ function App() {
 				<SectionContainer>
 					<div className={schemeSelectContainer}>
 						<FlexContainer>
-							<SearchSchemeForm />
+							<SearchSchemeForm
+								searchText={searchText}
+								onChangeSearchText={handleSearchTextChange}
+								onSearch={handleSearch}
+							/>
 							<SelectLightness />
 						</FlexContainer>
 						<SchemeGrid>
-							{schemes.map((scheme) => (
+							{filteredSchemes.map((scheme) => (
 								<SchemeCard
 									key={scheme.name}
 									name={scheme.name}
