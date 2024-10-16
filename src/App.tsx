@@ -14,7 +14,9 @@ import { schemeSelectContainer } from './styles/container.css';
 import { Scheme } from './types/scheme';
 
 function App() {
-	const [selectedScheme, setSelectedScheme] = useState<string | null>(null);
+	const [selectedScheme, setSelectedScheme] = useState<string | null>(
+		schemes[0].name
+	);
 	const handleSchemeCardClick = (ev: MouseEvent<HTMLDListElement>) => {
 		const {
 			currentTarget: { dataset },
@@ -52,7 +54,6 @@ function App() {
 									key={scheme.name}
 									name={scheme.name}
 									colorScheme={scheme.colorScheme}
-									theme={scheme.theme === 'light' ? 'light' : 'dark'}
 									onClick={handleSchemeCardClick}
 									isSelected={selectedScheme === scheme.name}
 								/>

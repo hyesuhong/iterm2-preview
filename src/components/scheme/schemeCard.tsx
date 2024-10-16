@@ -11,14 +11,15 @@ import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { HTMLAttributes } from 'react';
 import ColorChart from './colorChart';
 
-interface SchemeCardProps extends Scheme, HTMLAttributes<HTMLDListElement> {
+interface SchemeCardProps
+	extends Pick<Scheme, 'name' | 'colorScheme'>,
+		HTMLAttributes<HTMLDListElement> {
 	isSelected?: boolean;
 }
 
 const SchemeCard = ({
 	name,
 	colorScheme,
-	theme,
 	isSelected,
 	onClick,
 }: SchemeCardProps) => {

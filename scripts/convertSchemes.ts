@@ -29,7 +29,7 @@ const writeSchemesJson = async () => {
 		await fs.access(EXPORT_DIR);
 		console.log('can access');
 	} catch (e) {
-		console.log('cannot access');
+		console.log('cannot access', e);
 		await fs.mkdir(EXPORT_DIR);
 	}
 
@@ -77,7 +77,7 @@ const parseSchemeLises = (lines: string[]): Scheme => {
 		.map((line, index) => ({ index, text: line }))
 		.filter((line) => line.text.match(REGEXP.key.all));
 
-	for (let { text, index } of keyLines) {
+	for (const { text, index } of keyLines) {
 		const key = modifyKey(text.replace(REGEXP.replacer.key, ''));
 
 		if (key === '') {

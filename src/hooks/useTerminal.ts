@@ -1,5 +1,5 @@
 import { ITerminalOptions, Terminal } from '@xterm/xterm';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface UseTerminal {
 	options: ITerminalOptions;
@@ -7,13 +7,10 @@ interface UseTerminal {
 
 const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 	const terminalRef = useRef<Terminal | null>(null);
-	const [isLoaded, setIsLoaded] = useState(false);
 	const wrapperRef = useRef<T>(null);
 
 	useEffect(() => {
 		if (wrapperRef.current) {
-			setIsLoaded(true);
-
 			const terminal = new Terminal(options);
 
 			terminal.open(wrapperRef.current);
@@ -32,11 +29,10 @@ const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 				terminalRef.current = null;
 			}
 		};
-	}, [wrapperRef, isLoaded]);
+	}, [wrapperRef, options]);
 
 	useEffect(() => {
 		if (terminalRef.current) {
-			console.log(terminalRef.current);
 			terminalRef.current.options = options;
 		}
 	}, [options]);

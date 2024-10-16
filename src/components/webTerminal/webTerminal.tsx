@@ -3,12 +3,12 @@ import { jetBrainsMono } from '@/styles/font.css';
 import { backgroundVar, wrapper } from '@/styles/webTerminal.css';
 import { Scheme } from '@/types/scheme';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { ITerminalOptions } from '@xterm/xterm';
+import { ITerminalInitOnlyOptions, ITerminalOptions } from '@xterm/xterm';
 
 import '@xterm/xterm/css/xterm.css';
 import { useEffect, useState } from 'react';
 
-const initialOptions: ITerminalOptions = {
+const initialOptions: ITerminalOptions & ITerminalInitOnlyOptions = {
 	allowTransparency: true,
 	cursorBlink: true,
 	cursorStyle: 'block',
