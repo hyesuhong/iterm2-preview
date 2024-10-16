@@ -1,5 +1,5 @@
 import { Header } from '@/components/header';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useRef, useState } from 'react';
 import {
 	FlexContainer,
 	MainContainer,
@@ -21,6 +21,7 @@ function App() {
 		schemes as Scheme[]
 	);
 	const [searchText, setSearchText] = useState('');
+	const gridRef = useRef<HTMLDivElement>(null);
 
 	const handleSchemeCardClick = (ev: MouseEvent<HTMLDListElement>) => {
 		const {
@@ -47,6 +48,8 @@ function App() {
 		);
 		setFilteredSchemes(filteredSchemeArr as Scheme[]);
 		setSelectedScheme(filteredSchemeArr[0].name);
+
+		gridRef.current?.scrollTo({ top: 0 });
 	};
 
 	const getSelectedScheme = (name: string | null) => {
@@ -74,7 +77,7 @@ function App() {
 							/>
 							<SelectLightness />
 						</FlexContainer>
-						<SchemeGrid>
+						<SchemeGrid gridRef={gridRef}>
 							{filteredSchemes.map((scheme) => (
 								<SchemeCard
 									key={scheme.name}

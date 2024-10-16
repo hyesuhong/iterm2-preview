@@ -1,8 +1,16 @@
 import { schemeGrid } from '@/styles/scheme.css';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, RefObject } from 'react';
 
-const SchemeGrid = ({ children }: PropsWithChildren) => {
-	return <div className={schemeGrid}>{children}</div>;
+interface SchemeGridProps extends PropsWithChildren {
+	gridRef: RefObject<HTMLDivElement>;
+}
+
+const SchemeGrid = ({ children, gridRef }: SchemeGridProps) => {
+	return (
+		<div className={schemeGrid} ref={gridRef}>
+			{children}
+		</div>
+	);
 };
 
 export default SchemeGrid;
