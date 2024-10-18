@@ -18,10 +18,16 @@ const isScheme = (data: unknown) => {
 	const hasStringName = typeof targetObject.name === 'string';
 	const hasTheme =
 		typeof targetObject.theme === 'string' &&
-		(targetObject.theme === 'light' || targetObject.theme === 'dart');
+		(targetObject.theme === 'light' || targetObject.theme === 'dark');
 	const hasColorScheme =
-		Array.isArray(targetObject.colorScheme) &&
-		targetObject.colorScheme.every((color) => typeof color === 'string');
+		typeof targetObject.colorScheme === 'object' &&
+		targetObject.colorScheme !== null &&
+		Object.keys(targetObject.colorScheme).every(
+			(color) => typeof color === 'string'
+		) &&
+		Object.values(targetObject.colorScheme).every(
+			(color) => typeof color === 'string'
+		);
 
 	return hasStringName && hasTheme && hasColorScheme;
 };
