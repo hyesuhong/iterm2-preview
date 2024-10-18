@@ -1,14 +1,17 @@
+import { IcoDownload } from '@/assets/icons';
 import {
 	schemeCard,
 	schemeCssVars,
 	schemeCursor,
 	schemeDisplay,
 	schemeName,
+	schemeNameSpan,
 	schemeText,
 } from '@/styles/scheme.css';
 import { Scheme } from '@/types/scheme';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, MouseEvent } from 'react';
+import { IconButton } from '../button';
 import ColorChart from './colorChart';
 
 interface SchemeCardProps
@@ -23,6 +26,33 @@ const SchemeCard = ({
 	isSelected,
 	onClick,
 }: SchemeCardProps) => {
+	const fileName = `${name}.itermcolors`;
+	const downloadUrl = `https://raw.githubusercontent.com/mbadolato/iTerm2-Color-Schemes/master/schemes/${fileName}`;
+
+	const onClickDownload = async (ev: MouseEvent<HTMLButtonElement>) => {
+		ev.stopPropagation();
+
+		try {
+			const data = await fetch(downloadUrl);
+
+			if (data.ok) {
+				const resBlob = await data.blob();
+				const fileURL = URL.createObjectURL(resBlob);
+				console.log(resBlob);
+
+				const anchor = document.createElement('a');
+				anchor.href = fileURL;
+				anchor.target = '_blank';
+				anchor.download = fileName;
+				document.body.appendChild(anchor);
+				anchor.click();
+				document.body.removeChild(anchor);
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<dl
 			className={schemeCard[isSelected ? 'selected' : 'default']}
@@ -56,6 +86,14 @@ const SchemeCard = ({
 			})}
 			onClick={onClick}
 		>
+			<dt className={schemeName}>
+				<span className={schemeNameSpan}>{name}</span>
+				{/* <a href={downloadUrl} download={fileName} target='_blank'> */}
+				<IconButton onClick={onClickDownload}>
+					<IcoDownload />
+				</IconButton>
+				{/* </a> */}
+			</dt>
 			<dd className={`${schemeDisplay} mono`}>
 				<ColorChart />
 				<p className={schemeText}>
@@ -63,7 +101,6 @@ const SchemeCard = ({
 					<span className={schemeCursor} />
 				</p>
 			</dd>
-			<dt className={schemeName}>{name}</dt>
 		</dl>
 	);
 };
