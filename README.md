@@ -5,7 +5,7 @@
 - [x] fetch color schemes
 - [x] select -> preview
 - [x] filter by lightness(dark or light)?
-- [ ] copy scheme
+- [x] download scheme
 - [ ] initial Display Settings for the Terminal
 - [ ] add command for terminal
   - [ ] help: show all available commands
