@@ -9,17 +9,18 @@ import { SchemeCard, SchemeGrid } from './components/scheme';
 import { SearchSchemeForm } from './components/searchScheme';
 import { SelectLightness } from './components/selectLightness';
 import { WebTerminal } from './components/webTerminal';
-import schemes from './data/schemes.json';
+import schemesData from './data/schemes.json';
 import { schemeSelectContainer } from './styles/container.css';
 import { Scheme, Theme } from './types/scheme';
+import { castScheme } from './utils/cast';
+
+const schemes = castScheme(schemesData);
 
 function App() {
 	const [selectedScheme, setSelectedScheme] = useState<string | null>(
 		schemes[0].name
 	);
-	const [filteredSchemes, setFilteredSchemes] = useState<Scheme[]>(
-		schemes as Scheme[]
-	);
+	const [filteredSchemes, setFilteredSchemes] = useState<Scheme[]>(schemes);
 	const [searchText, setSearchText] = useState('');
 	const [selectedTheme, setSelectedTheme] = useState<Theme>('');
 	const gridRef = useRef<HTMLDivElement>(null);
@@ -64,7 +65,7 @@ function App() {
 			: schemes.filter((scheme) => scheme.theme === theme);
 
 		if (!searchText) {
-			setFilteredSchemes(schemesByTheme as Scheme[]);
+			setFilteredSchemes(schemesByTheme);
 			setSelectedScheme(schemesByTheme[0].name);
 		} else {
 			const regExp = new RegExp(searchText, 'gi');
@@ -72,7 +73,7 @@ function App() {
 				scheme.name.match(regExp)
 			);
 
-			setFilteredSchemes(filteredSchemeArr as Scheme[]);
+			setFilteredSchemes(filteredSchemeArr);
 			setSelectedScheme(filteredSchemeArr[0].name);
 		}
 
@@ -84,7 +85,7 @@ function App() {
 		if (!(name && targetScheme)) {
 			return null;
 		}
-		return targetScheme as Scheme;
+		return targetScheme;
 	};
 
 	return (
