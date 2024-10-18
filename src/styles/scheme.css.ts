@@ -5,6 +5,7 @@ import {
 	style,
 	styleVariants,
 } from '@vanilla-extract/css';
+import { schemeListContainer } from './container.css';
 
 export const schemeCssVars = createThemeContract({
 	background: null,
@@ -45,9 +46,18 @@ export const schemeGrid = style({
 	gap: 24,
 	overflowX: 'hidden',
 	overflowY: 'auto',
+
+	'@container': {
+		[`${schemeListContainer} (max-width: 400px)`]: {
+			gridTemplateColumns: 'repeat(1, minmax(0, 1fr))',
+		},
+	},
 });
 
 const schemeCardBase = style({
+	display: 'flex',
+	flexDirection: 'column-reverse',
+	rowGap: 12,
 	padding: 8,
 	borderRadius: 8,
 	borderWidth: 1,
@@ -70,6 +80,7 @@ export const schemeCard = styleVariants({
 });
 
 export const schemeDisplay = style({
+	flex: 1,
 	background: schemeCssVars.background,
 	padding: '20px 12px',
 	borderRadius: 4,
@@ -164,6 +175,12 @@ export const schemeCursor = style({
 });
 
 export const schemeName = style({
+	display: 'flex',
+	alignItems: 'center',
+	columnGap: '0.25rem',
 	fontSize: 14,
-	marginTop: 12,
+});
+
+export const schemeNameSpan = style({
+	flex: 1,
 });
