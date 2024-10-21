@@ -32,32 +32,42 @@ const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 
 			terminal.open(wrapperRef.current);
 			terminal.write(initialDisplay);
-			terminal.onKey(({ domEvent }) => {
-				const { key } = domEvent;
-				if (key === 'Enter') {
-					const command = getCommand();
-					const result = runCommand(command);
+			terminal.onData((data) => {
+				switch (data) {
+					case '\r': {
+						const command = getCommand();
+						const result = runCommand(command);
 
-					breakLine(terminal);
-					terminal.write(result);
-					breakLine(terminal);
-					terminal.write('$ ');
+						breakLine(terminal);
+						terminal.write(result);
+						breakLine(terminal);
+						terminal.write('$ ');
 
-					setCommand('');
-					return;
-				} else if (key === 'Backspace') {
-					terminal.write('\b \b');
-					const slicedCommand = commandRef.current.slice(
-						0,
-						commandRef.current.length - 1
-					);
+						setCommand('');
+						return;
+					}
+					case '\u007F': {
+						terminal.write('\b \b');
+						const slicedCommand = commandRef.current.slice(
+							0,
+							commandRef.current.length - 1
+						);
 
-					setCommand(slicedCommand);
-					return;
+						setCommand(slicedCommand);
+						return;
+					}
+					default: {
+						if (
+							(data >= String.fromCharCode(0x20) &&
+								data <= String.fromCharCode(0x7e)) ||
+							data >= '\u00a0'
+						) {
+							setCommand(commandRef.current + data);
+							terminal.write(data);
+						}
+						return;
+					}
 				}
-
-				terminal.write(key);
-				setCommand(commandRef.current + key);
 			});
 
 			terminalRef.current = terminal;
