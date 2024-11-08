@@ -31,12 +31,12 @@ const WebTerminal = ({ scheme }: WebTerminalProps) => {
 	return (
 		<>
 			<div
-				className={`${wrapper} mono`}
+				className={`${wrapper}`}
 				ref={ref}
 				style={assignInlineVars({
 					[backgroundVar]: scheme?.colorScheme.background,
 				})}
-			></div>
+			/>
 		</>
 	);
 };

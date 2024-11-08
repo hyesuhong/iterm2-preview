@@ -1,4 +1,6 @@
 import { initialDisplay, runCommand } from '@/utils/terminal';
+import { FitAddon } from '@xterm/addon-fit';
+import { WebLinksAddon } from '@xterm/addon-web-links';
 import { ITerminalOptions, Terminal } from '@xterm/xterm';
 import { useEffect, useRef } from 'react';
 
@@ -8,6 +10,9 @@ interface UseTerminal {
 
 const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 	const terminalRef = useRef<Terminal | null>(null);
+	const fitAddonRef = useRef<FitAddon | null>(null);
+	const webLinksAddonRef = useRef<WebLinksAddon | null>(null);
+
 	const wrapperRef = useRef<T>(null);
 	const commandRef = useRef('');
 
@@ -26,11 +31,22 @@ const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 		terminal.write('\r\n');
 	};
 
+	const fitTerminal = () => {
+		if (fitAddonRef.current) {
+			fitAddonRef.current.fit();
+		}
+	};
+
 	useEffect(() => {
 		if (wrapperRef.current) {
 			const terminal = new Terminal(options);
+			const fitAddon = new FitAddon();
+			const webLinksAddon = new WebLinksAddon();
 
+			terminal.loadAddon(fitAddon);
+			terminal.loadAddon(webLinksAddon);
 			terminal.open(wrapperRef.current);
+
 			terminal.write(initialDisplay);
 			terminal.onData((data) => {
 				switch (data) {
@@ -71,13 +87,21 @@ const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 			});
 
 			terminalRef.current = terminal;
+			fitAddonRef.current = fitAddon;
+			webLinksAddonRef.current = webLinksAddon;
+
+			fitTerminal();
 		}
 
 		return () => {
-			if (terminalRef.current) {
-				terminalRef.current.dispose();
-				terminalRef.current = null;
-			}
+			terminalRef.current && terminalRef.current.dispose();
+			terminalRef.current = null;
+
+			fitAddonRef.current && fitAddonRef.current.dispose();
+			fitAddonRef.current = null;
+
+			webLinksAddonRef.current && webLinksAddonRef.current.dispose();
+			webLinksAddonRef.current = null;
 		};
 	}, [wrapperRef]);
 
