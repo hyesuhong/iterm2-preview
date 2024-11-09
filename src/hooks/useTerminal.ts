@@ -22,8 +22,10 @@ const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
 		}
 
 		return () => {
-			terminalRef.current && terminalRef.current.disposeAll();
-			terminalRef.current = null;
+			if (terminalRef.current) {
+				terminalRef.current.disposeAll();
+				terminalRef.current = null;
+			}
 		};
 	}, [wrapperRef]);
 

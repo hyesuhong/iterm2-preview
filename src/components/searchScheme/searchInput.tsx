@@ -1,9 +1,11 @@
 import { input } from '@/styles/searchScheme.css';
 import { InputHTMLAttributes } from 'react';
 
-interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {}
-
-const SearchInput = ({ value, onChange, placeholder }: SearchInputProps) => {
+const SearchInput = ({
+	value,
+	onChange,
+	placeholder,
+}: InputHTMLAttributes<HTMLInputElement>) => {
 	return (
 		<input
 			type='text'
