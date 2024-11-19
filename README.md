@@ -2,12 +2,19 @@
 
 ## TODO
 
-- [x] fetch color schemes
-- [x] select -> preview
-- [x] filter by lightness(dark or light)?
-- [x] download scheme
-- [x] initial Display Settings for the Terminal
-- [x] add command for terminal
-  - [x] help: show all available commands
-  - [x] info: developer's info
-  - [x] git: open new tab and move github
+### Fix
+
+- [ ] terminal's font rendering
+- [ ] on safari, failed svg rendering
+
+### Modify
+
+- [ ] html setting(icon, title, description...)
+- [ ] logo
+
+## Next
+
+- like or compare
+  - if like function applied, auth can be considered
+- customize user's own scheme
+- oh-my-zsh theme..?
