@@ -9,6 +9,8 @@
 
 ### Modify
 
+- [ ] write README properly
+- [ ] add template(issue, pr)
 - [ ] html setting(icon, title, description...)
 - [ ] logo
 
