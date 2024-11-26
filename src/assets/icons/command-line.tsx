@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 
-const Moon = ({ className }: HTMLAttributes<SVGSVGElement>) => {
+const CommandLine = ({ className }: HTMLAttributes<SVGSVGElement>) => {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
@@ -13,10 +13,10 @@ const Moon = ({ className }: HTMLAttributes<SVGSVGElement>) => {
 			<path
 				strokeLinecap='round'
 				strokeLinejoin='round'
-				d='M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z'
+				d='m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z'
 			/>
 		</svg>
 	);
 };
 
-export default Moon;
+export default CommandLine;

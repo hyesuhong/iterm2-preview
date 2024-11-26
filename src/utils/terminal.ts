@@ -18,7 +18,7 @@ const infoData = {
 	description: `Preview for iTerm2's theme.`,
 	github: {
 		developer: 'https://github.com/hyesuhong',
-		project: '',
+		project: 'https://github.com/hyesuhong/iterm2-preview',
 	},
 	sources: {
 		iTerm2_Color_Schemes: 'https://github.com/mbadolato/iTerm2-Color-Schemes',
@@ -28,7 +28,34 @@ const infoData = {
 	},
 };
 
-const commands = {
+const ANSI_ESCAPE = '\x1b';
+const ANSI_RESET = '0';
+const ANSI_COLOR_CODE = {
+	foreground: {
+		black: '30',
+		red: '31',
+		green: '32',
+		yellow: '33',
+		blue: '34',
+		magenta: '35',
+		cyan: '36',
+		white: '37',
+		default: '39',
+	},
+	background: {
+		black: '40',
+		red: '41',
+		green: '42',
+		yellow: '43',
+		blue: '44',
+		magenta: '45',
+		cyan: '46',
+		white: '47',
+		default: '49',
+	},
+};
+
+export const commands = {
 	help: {
 		description: 'Prints this help message',
 		func: () => {
@@ -75,15 +102,23 @@ const commands = {
 				: 'Failed to open github ';
 		},
 	},
-};
+	color: {
+		description: 'Preview colored text',
+		func: () => {
+			const foregroundColoredText = Object.keys(ANSI_COLOR_CODE.foreground).map(
+				(key) => {
+					const colorKey = key as keyof typeof ANSI_COLOR_CODE.foreground;
+					return `${ANSI_ESCAPE}[${ANSI_COLOR_CODE.foreground[colorKey]}mforeground ${key}${ANSI_ESCAPE}[${ANSI_RESET}m`;
+				}
+			);
+			const backgroundColoredText = Object.keys(ANSI_COLOR_CODE.background).map(
+				(key) => {
+					const colorKey = key as keyof typeof ANSI_COLOR_CODE.foreground;
+					return `${ANSI_ESCAPE}[${ANSI_COLOR_CODE.background[colorKey]}mbackground ${key}${ANSI_ESCAPE}[${ANSI_RESET}m`;
+				}
+			);
 
-export const runCommand = (command: string) => {
-	if (command.length > 0 && command in commands) {
-		const commandKey = command as keyof typeof commands;
-		const result = commands[commandKey].func();
-
-		return result;
-	}
-
-	return `command not found: ${command}`;
+			return [...foregroundColoredText, ...backgroundColoredText].join('\r\n');
+		},
+	},
 };

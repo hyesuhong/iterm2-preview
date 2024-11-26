@@ -1,4 +1,6 @@
-const Sun = () => {
+import { HTMLAttributes } from 'react';
+
+const Sun = ({ className }: HTMLAttributes<SVGSVGElement>) => {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
@@ -6,7 +8,7 @@ const Sun = () => {
 			viewBox='0 0 24 24'
 			strokeWidth={1.5}
 			stroke='currentColor'
-			className='size-6'
+			className={className}
 		>
 			<path
 				strokeLinecap='round'

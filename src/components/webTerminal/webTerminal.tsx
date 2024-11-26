@@ -2,6 +2,7 @@ import useTerminal from '@/hooks/useTerminal';
 import { jetBrainsMono } from '@/styles/font.css';
 import { backgroundVar, wrapper } from '@/styles/webTerminal.css';
 import { Scheme } from '@/types/scheme';
+import { commands } from '@/utils/terminal';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { ITerminalInitOnlyOptions, ITerminalOptions } from '@xterm/xterm';
 
@@ -12,7 +13,7 @@ const initialOptions: ITerminalOptions & ITerminalInitOnlyOptions = {
 	allowTransparency: true,
 	cursorBlink: true,
 	cursorStyle: 'block',
-	fontFamily: jetBrainsMono,
+	fontFamily: `${jetBrainsMono}, monospace`,
 	fontSize: 14,
 };
 
@@ -22,7 +23,7 @@ interface WebTerminalProps {
 
 const WebTerminal = ({ scheme }: WebTerminalProps) => {
 	const [options, setOptions] = useState(initialOptions);
-	const { ref } = useTerminal<HTMLDivElement>({ options });
+	const { ref } = useTerminal<HTMLDivElement>({ options, commands });
 
 	useEffect(() => {
 		setOptions((prev) => ({ ...prev, theme: scheme?.colorScheme }));
