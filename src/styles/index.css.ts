@@ -10,6 +10,7 @@ globalStyle('*', {
 globalStyle('body', {
 	fontFamily: `${pretendard}, sans-serif`,
 	background: '#f5f5f5',
+	color: '#333333',
 });
 
 globalStyle('a', {
