@@ -1,5 +1,5 @@
-import { IconMoon, IconSun } from '@/assets/icons';
-import { wrapper } from '@/styles/selectLightness.css';
+import { IcoAll, IconMoon, IconSun } from '@/assets/icons';
+import { icon, wrapper } from '@/styles/selectLightness.css';
 import { Theme } from '@/types/scheme';
 import { FlexContainer } from '../container';
 import LightnessItem from './lightnessItem';
@@ -10,9 +10,9 @@ interface SelectProps {
 }
 
 const themes = [
-	{ value: '', children: 'All' },
-	{ value: 'light', children: <IconSun /> },
-	{ value: 'dark', children: <IconMoon /> },
+	{ value: '', children: <IcoAll className={icon} /> },
+	{ value: 'light', children: <IconSun className={icon} /> },
+	{ value: 'dark', children: <IconMoon className={icon} /> },
 ];
 
 const Select = ({ selectedTheme = '', onChange }: SelectProps) => {

@@ -13,15 +13,11 @@ export const radioInput = style({
 });
 
 export const label = style({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
 	width: 24,
 	height: 24,
-	padding: 4,
+	padding: 2,
 	borderRadius: 4,
-	fontSize: 12,
-	fontWeight: 700,
+	overflow: 'hidden',
 	cursor: 'pointer',
 	color: '#999',
 	transition: 'color 0.3s ease-in, background 0.3s ease-in',
@@ -36,4 +32,9 @@ export const label = style({
 			background: '#fff',
 		},
 	},
+});
+
+export const icon = style({
+	width: '100%',
+	height: '100%',
 });
