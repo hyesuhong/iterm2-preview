@@ -1,4 +1,4 @@
-import { runCommand } from '@/utils/terminal';
+import { CommandGroup } from '@/types/web-terminal';
 import { FitAddon } from '@xterm/addon-fit';
 import { WebLinksAddon } from '@xterm/addon-web-links';
 import { ITerminalOptions, Terminal } from '@xterm/xterm';
@@ -10,11 +10,15 @@ export default class WebTerminal {
 	private fitAddon: FitAddon;
 	private wegLinksAddon: WebLinksAddon;
 
-	constructor(options?: ITerminalOptions) {
+	private commands: CommandGroup;
+
+	constructor(options?: ITerminalOptions, commands?: CommandGroup) {
 		this.terminal = new Terminal(options);
 
 		this.fitAddon = new FitAddon();
 		this.wegLinksAddon = new WebLinksAddon();
+
+		this.commands = commands || {};
 
 		this.init();
 	}
@@ -59,6 +63,15 @@ export default class WebTerminal {
 		this.input = input;
 	}
 
+	private runCommand(command: string) {
+		if (command.length < 1 || !(command in this.commands)) {
+			return `command not found: ${command}`;
+		}
+
+		const result = this.commands[command].func();
+		return result;
+	}
+
 	private breakLine() {
 		this.terminal.write('\r\n');
 	}
@@ -67,7 +80,7 @@ export default class WebTerminal {
 		switch (data) {
 			case '\r': {
 				const command = this.getCommand();
-				const result = runCommand(command);
+				const result = this.runCommand(command);
 
 				this.breakLine();
 				this.write(result);

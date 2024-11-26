@@ -18,7 +18,7 @@ const infoData = {
 	description: `Preview for iTerm2's theme.`,
 	github: {
 		developer: 'https://github.com/hyesuhong',
-		project: '',
+		project: 'https://github.com/hyesuhong/iterm2-preview',
 	},
 	sources: {
 		iTerm2_Color_Schemes: 'https://github.com/mbadolato/iTerm2-Color-Schemes',
@@ -28,7 +28,7 @@ const infoData = {
 	},
 };
 
-const commands = {
+export const commands = {
 	help: {
 		description: 'Prints this help message',
 		func: () => {
@@ -75,15 +75,4 @@ const commands = {
 				: 'Failed to open github ';
 		},
 	},
-};
-
-export const runCommand = (command: string) => {
-	if (command.length > 0 && command in commands) {
-		const commandKey = command as keyof typeof commands;
-		const result = commands[commandKey].func();
-
-		return result;
-	}
-
-	return `command not found: ${command}`;
 };

@@ -1,19 +1,24 @@
 import WebTerminal from '@/services/web-terminal';
+import { CommandGroup } from '@/types/web-terminal';
 import { initialDisplay } from '@/utils/terminal';
 import { ITerminalOptions } from '@xterm/xterm';
 import { useEffect, useRef } from 'react';
 
 interface UseTerminal {
 	options: ITerminalOptions;
+	commands?: CommandGroup;
 }
 
-const useTerminal = <T extends HTMLElement>({ options }: UseTerminal) => {
+const useTerminal = <T extends HTMLElement>({
+	options,
+	commands,
+}: UseTerminal) => {
 	const terminalRef = useRef<WebTerminal | null>(null);
 	const wrapperRef = useRef<T>(null);
 
 	useEffect(() => {
 		if (wrapperRef.current) {
-			const terminal = new WebTerminal(options);
+			const terminal = new WebTerminal(options, commands);
 			terminalRef.current = terminal;
 
 			terminal.open(wrapperRef.current);
