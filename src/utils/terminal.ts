@@ -98,7 +98,7 @@ export const commands = {
 		func: () => {
 			const isSuccessedOpenUrl = open(infoData.github.project, '_blank');
 			return isSuccessedOpenUrl !== null
-				? 'Successfully openend github'
+				? 'Successfully opened github'
 				: 'Failed to open github ';
 		},
 	},
