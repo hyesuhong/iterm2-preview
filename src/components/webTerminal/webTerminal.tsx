@@ -12,7 +12,7 @@ const initialOptions: ITerminalOptions & ITerminalInitOnlyOptions = {
 	allowTransparency: true,
 	cursorBlink: true,
 	cursorStyle: 'block',
-	fontFamily: jetBrainsMono,
+	fontFamily: `${jetBrainsMono}, monospace`,
 	fontSize: 14,
 };
 
