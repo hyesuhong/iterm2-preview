@@ -88,11 +88,9 @@ const SchemeCard = ({
 		>
 			<dt className={schemeName}>
 				<span className={schemeNameSpan}>{name}</span>
-				{/* <a href={downloadUrl} download={fileName} target='_blank'> */}
 				<IconButton onClick={onClickDownload}>
 					<IcoDownload />
 				</IconButton>
-				{/* </a> */}
 			</dt>
 			<dd className={`${schemeDisplay} mono`}>
 				<ColorChart />
